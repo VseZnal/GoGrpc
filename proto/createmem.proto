@@ -1,40 +1,39 @@
 syntax = "proto3";
 package pb;
-option go_package = "/services/comments/protocomments";
+option go_package = "/services/createmem/protocreatemem";
 
 import "google/api/annotations.proto";
 
 
-//Описание сервиса Comment
-service CommentService {
+//Описание сервиса Createmem
+service CreatememService {
 
   //Создание записи
-  rpc Create (CreateCommentRequest) returns (CreateCommentResponse) {
+  rpc Create (CreateMemRequest) returns (CreateMemResponse) {
     option (google.api.http) = {
-      post: "/api/v1/comment"
+      post: "/api/v1/Create"
     };
   }
-
 
 }
 
 //------------------------------------------------------------------------------------------------------------------
 //  CREATE
 //------------------------------------------------------------------------------------------------------------------
-message CreateCommentRequest {
+message CreateMemRequest {
   string ParentId = 1;
   string UserId = 2;
   string PostId = 3;
   string Content = 4;
 }
-message CreateCommentResponse {
-  Comment Comment = 1;
+message CreateMemResponse {
+  Mem Mem = 1;
 }
 
 //------------------------------------------------------------------------------------------------------------------
 //  COMMENT
 //------------------------------------------------------------------------------------------------------------------
-message Comment {
+message Mem {
   string Slug = 1;
   string ParentId = 2;
   string UserId = 3;

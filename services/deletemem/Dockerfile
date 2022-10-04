@@ -15,4 +15,4 @@ RUN GO111MODULE=on \
 RUN go mod download
 CMD go run main.go
 
-EXPOSE 8000
+EXPOSE 8080

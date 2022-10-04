@@ -1,0 +1,28 @@
+syntax = "proto3";
+package pb;
+option go_package = "/services/deletemem/protodeletemem";
+
+import "google/api/annotations.proto";
+
+
+//Описание сервиса Deletemem
+service DeletememService {
+
+  //Удаление записи
+  rpc Delete (DeleteMemRequest) returns (DeleteMemResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/delete/{Slug}"
+    };
+  }
+
+}
+
+//------------------------------------------------------------------------------------------------------------------
+//  DELETE
+//------------------------------------------------------------------------------------------------------------------
+message DeleteMemRequest {
+  string Slug = 1;
+}
+message DeleteMemResponse {
+  int32 Status =1;
+}
