@@ -1,0 +1,45 @@
+syntax = "proto3";
+package pb;
+option go_package = "/services/comments/protocomments";
+
+import "google/api/annotations.proto";
+
+
+//Описание сервиса Comment
+service CommentService {
+
+  //Создание записи
+  rpc Create (CreateCommentRequest) returns (CreateCommentResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/comment"
+    };
+  }
+
+
+}
+
+//------------------------------------------------------------------------------------------------------------------
+//  CREATE
+//------------------------------------------------------------------------------------------------------------------
+message CreateCommentRequest {
+  string ParentId = 1;
+  string UserId = 2;
+  string PostId = 3;
+  string Content = 4;
+}
+message CreateCommentResponse {
+  Comment Comment = 1;
+}
+
+//------------------------------------------------------------------------------------------------------------------
+//  COMMENT
+//------------------------------------------------------------------------------------------------------------------
+message Comment {
+  string Slug = 1;
+  string ParentId = 2;
+  string UserId = 3;
+  string PostId = 4;
+  string Content = 5;
+  int32 Status = 6;
+
+}
