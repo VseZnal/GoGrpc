@@ -5,7 +5,7 @@ option go_package = "/services/getmem/protogetmem";
 import "google/api/annotations.proto";
 
 
-//Описание сервиса Comment
+//Описание сервиса Get
 service GetmemService {
 
   //Возвращает запись по SLUG
@@ -24,13 +24,13 @@ message GetMemRequest {
   string Slug = 1;
 }
 message GetMemResponse {
-  Mem Mem = 1;
+  Memget Memget = 1;
 }
 
 //------------------------------------------------------------------------------------------------------------------
 //  COMMENT
 //------------------------------------------------------------------------------------------------------------------
-message Mem {
+message Memget {
   string Slug = 1;
   string ParentId = 2;
   string UserId = 3;

@@ -27,13 +27,13 @@ message CreateMemRequest {
   string Content = 4;
 }
 message CreateMemResponse {
-  Mem Mem = 1;
+  Memcreate Memcreate = 1;
 }
 
 //------------------------------------------------------------------------------------------------------------------
 //  COMMENT
 //------------------------------------------------------------------------------------------------------------------
-message Mem {
+message Memcreate {
   string Slug = 1;
   string ParentId = 2;
   string UserId = 3;

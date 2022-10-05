@@ -2,20 +2,34 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	createService "Grpc/services/api-gw/protogw/createmem/proto"
-	deleteService "Grpc/services/api-gw/protogw/deletemem/proto"
 	getService "Grpc/services/api-gw/protogw/getmem/proto"
 
 	_ "github.com/subosito/gotenv"
 	"log"
 	"net/http"
-	"os"
 )
+
+func main() {
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	err := getService.RegisterGetmemServiceHandlerFromEndpoint(ctx, mux, "localhost:8083", opts)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("server listening at 8000")
+	if err := http.ListenAndServe(":8000", mux); err != nil {
+		panic(err)
+	}
+}
+
+/*
 
 var (
 	// gRPC services
@@ -111,3 +125,5 @@ func HTTPProxy(proxyAddr string) {
 func helloworld(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "URL:", r.URL.String())
 }
+
+*/

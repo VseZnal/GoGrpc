@@ -1,14 +1,31 @@
 package main
 
 import (
-	"Grpc/services/getmem/app"
 	protogetmem "Grpc/services/getmem/protogetmem/proto"
-	"fmt"
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"os"
 )
+
+type server struct {
+	protogetmem.UnimplementedGetmemServiceServer
+}
+
+func main() {
+
+	lis, err := net.Listen("tcp", ":8083")
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+	protogetmem.RegisterGetmemServiceServer(s, &server{})
+	log.Printf("server listening at %v", lis.Addr())
+	if err := s.Serve(lis); err != nil {
+		panic(err)
+	}
+}
+
+/*
 
 func main() {
 
@@ -35,3 +52,5 @@ func main() {
 		log.Fatalf("failed to serve: %s", err)
 	}
 }
+
+*/
