@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8000/post
+POST http://localhost:8000/api/v1/Create
 Content-Type: application/json
 
 {

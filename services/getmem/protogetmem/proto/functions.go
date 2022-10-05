@@ -12,8 +12,3 @@ func (s Server) Get(ctx context.Context, request *GetMemRequest) (*GetMemRespons
 	//TODO implement me
 	panic("implement me")
 }
-
-func (s Server) mustEmbedUnimplementedGetmemServiceServer() {
-	//TODO implement me
-	panic("implement me")
-}

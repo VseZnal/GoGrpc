@@ -6,6 +6,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
+	createService "Grpc/services/api-gw/protogw/createmem/proto"
+	deleteService "Grpc/services/api-gw/protogw/deletemem/proto"
 	getService "Grpc/services/api-gw/protogw/getmem/proto"
 
 	_ "github.com/subosito/gotenv"
@@ -23,6 +25,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	opts = []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	err = deleteService.RegisterDeletememServiceHandlerFromEndpoint(ctx, mux, "localhost:8082", opts)
+	if err != nil {
+		panic(err)
+	}
+
+	opts = []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	err = createService.RegisterCreatememServiceHandlerFromEndpoint(ctx, mux, "localhost:8081", opts)
+	if err != nil {
+		panic(err)
+	}
+
 	log.Printf("server listening at 8000")
 	if err := http.ListenAndServe(":8000", mux); err != nil {
 		panic(err)

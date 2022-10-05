@@ -12,8 +12,3 @@ func (s Server) Delete(ctx context.Context, request *DeleteMemRequest) (*DeleteM
 	//TODO implement me
 	panic("implement me")
 }
-
-func (s Server) mustEmbedUnimplementedDeletememServiceServer() {
-	//TODO implement me
-	panic("implement me")
-}

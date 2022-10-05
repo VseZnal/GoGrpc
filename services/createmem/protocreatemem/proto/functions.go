@@ -12,8 +12,3 @@ func (s Server) Create(ctx context.Context, request *CreateMemRequest) (*CreateM
 	//TODO implement me
 	panic("implement me")
 }
-
-func (s Server) mustEmbedUnimplementedCreatememServiceServer() {
-	//TODO implement me
-	panic("implement me")
-}
