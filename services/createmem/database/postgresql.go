@@ -1,11 +1,17 @@
 package postgresql
 
 import (
+	"Grpc/services/createmem/models"
 	"database/sql"
 	_ "github.com/lib/pq"
+	"log"
 
 	"fmt"
 )
+
+type Database interface {
+	Postdata_db(m models.CreateReq) models.CreateRes
+}
 
 type database struct {
 	conn *sql.DB
@@ -30,4 +36,14 @@ func NewDatabase() (*database, error) {
 	err = db.Ping()
 
 	return &database{conn: db}, err
+}
+
+func (db *database) Postdata_db(m models.CreateReq) models.CreateRes {
+	q := "INSERT INTO public.mem (parentId,userId,postId,content) VALUES ((SELECT MAX(postId) FROM public.mem)+1,'" + m.ParentId + "','" + m.UserId + "','" + m.Content + "')"
+	row, err := db.conn.Query(q)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer row.Close()
+	return models.CreateRes{}
 }
