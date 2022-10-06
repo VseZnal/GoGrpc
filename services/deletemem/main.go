@@ -12,6 +12,10 @@ type server struct {
 }
 
 func main() {
+	//e := protodeletemem.Init()
+	//if e != nil {
+	//	log.Fatal(e)
+	//}
 
 	lis, err := net.Listen("tcp", ":8082")
 	if err != nil {
