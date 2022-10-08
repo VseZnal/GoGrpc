@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.1
-// source: proto/getmem.proto
+// source: protogw/getmem.protogw
 
 package protogetmem
 
@@ -103,5 +103,5 @@ var GetmemService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/getmem.proto",
+	Metadata: "protogw/getmem.protogw",
 }

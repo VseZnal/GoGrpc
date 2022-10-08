@@ -1,6 +1,7 @@
 package main
 
 import (
+	protocreatemem "Grpc/services/createmem/protocreatemem/proto"
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -19,6 +20,12 @@ func main() {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
+
+	e := protocreatemem.Init()
+	if e != nil {
+		log.Fatal(e)
+	}
+
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	err := getService.RegisterGetmemServiceHandlerFromEndpoint(ctx, mux, "localhost:8083", opts)
@@ -42,6 +49,7 @@ func main() {
 	if err := http.ListenAndServe(":8000", mux); err != nil {
 		panic(err)
 	}
+
 }
 
 /*

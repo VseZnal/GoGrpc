@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.1
-// source: proto/deletemem.proto
+// source: protogw/deletemem.protogw
 
 package protodeletemem
 
@@ -103,5 +103,5 @@ var DeletememService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/deletemem.proto",
+	Metadata: "protogw/deletemem.protogw",
 }

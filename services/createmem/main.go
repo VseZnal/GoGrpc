@@ -13,10 +13,6 @@ type server struct {
 }
 
 func main() {
-	e := protocreatemem.Init()
-	if e != nil {
-		log.Fatal(e)
-	}
 
 	lis, err := net.Listen("tcp", ":8081")
 	if err != nil {
@@ -28,4 +24,5 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		panic(err)
 	}
+
 }
