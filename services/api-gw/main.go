@@ -1,30 +1,50 @@
 package main
 
 import (
-	protocreatemem "Grpc/services/createmem/protocreatemem/proto"
-	"context"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-
-	createService "Grpc/services/api-gw/protogw/createmem/proto"
 	deleteService "Grpc/services/api-gw/protogw/deletemem/proto"
 	getService "Grpc/services/api-gw/protogw/getmem/proto"
-
-	_ "github.com/subosito/gotenv"
+	"context"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
+	"regexp"
+
+	createService "Grpc/services/api-gw/protogw/createmem/proto"
+	_ "github.com/subosito/gotenv"
 )
 
+func allowedOrigin(origin string) bool {
+	if viper.GetString("cors") == "*" {
+		return true
+	}
+	if matched, _ := regexp.MatchString(viper.GetString("cors"), origin); matched {
+		return true
+	}
+	return false
+}
+
+func cors(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if allowedOrigin(r.Header.Get("Origin")) {
+			w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization, ResponseType")
+		}
+		if r.Method == "OPTIONS" {
+			return
+		}
+		h.ServeHTTP(w, r)
+	})
+}
+
 func main() {
+
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-
-	e := protocreatemem.Init()
-	if e != nil {
-		log.Fatal(e)
-	}
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
@@ -45,10 +65,13 @@ func main() {
 		panic(err)
 	}
 
-	log.Printf("server listening at 8000")
-	if err := http.ListenAndServe(":8000", mux); err != nil {
-		panic(err)
+	gwServer := &http.Server{
+		Addr:    ":8000",
+		Handler: mux,
 	}
+
+	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8000")
+	log.Fatalln(gwServer.ListenAndServe())
 
 }
 
