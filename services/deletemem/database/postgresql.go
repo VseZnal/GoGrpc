@@ -7,7 +7,11 @@ import (
 	"fmt"
 )
 
-type database struct {
+type Database interface {
+	Deletedata_db(id string) error
+}
+
+type Databaseconn struct {
 	conn *sql.DB
 }
 
@@ -19,7 +23,7 @@ const (
 	db_name  = "postgres"
 )
 
-func NewDatabase() (*database, error) {
+func NewDatabase() (*Databaseconn, error) {
 	connStr := "host=" + host + " port=" + port + " dbname=" + db_name + " user=" + user + " password=" + password + " sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -29,5 +33,10 @@ func NewDatabase() (*database, error) {
 	//defer db.Close()
 	err = db.Ping()
 
-	return &database{conn: db}, err
+	return &Databaseconn{conn: db}, err
+}
+
+func (d Databaseconn) Deletedata_db(id string) error {
+	//TODO implement me
+	panic("implement me")
 }

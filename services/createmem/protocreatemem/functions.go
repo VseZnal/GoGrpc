@@ -23,11 +23,11 @@ func Init() error {
 }
 
 func (s Server) Create(ctx context.Context, request *protocreatemem.CreateMemRequest) (*protocreatemem.CreateMemResponse, error) {
-	msg := models.CreateReq{
-		ParentId: request.ParentId,
-		UserId:   request.UserId,
-		PostId:   request.PostId,
-		Content:  request.Content}
+	msg := &models.CreateReq{
+		ParentId: request.GetParentId(),
+		UserId:   request.GetUserId(),
+		PostId:   request.GetPostId(),
+		Content:  request.GetContent()}
 
 	err := db.Postdata_db(msg)
 
@@ -35,10 +35,10 @@ func (s Server) Create(ctx context.Context, request *protocreatemem.CreateMemReq
 		fmt.Printf("enteted get msg info")
 	}
 	out := &protocreatemem.Memcreate{
-		ParentId: msg.ParentId,
-		UserId:   msg.UserId,
-		PostId:   msg.PostId,
-		Content:  msg.Content,
+		ParentId: request.ParentId,
+		UserId:   request.UserId,
+		PostId:   request.PostId,
+		Content:  request.Content,
 	}
 
 	return &protocreatemem.CreateMemResponse{Memcreate: out}, nil

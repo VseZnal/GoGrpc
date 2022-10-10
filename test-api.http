@@ -1,6 +1,6 @@
 ###
 
-GET http://localhost:8000/api/v1/get/1
+GET http://localhost:8000/api/v1/get/3
 Content-Type: application/json
 
 ###
@@ -14,10 +14,10 @@ POST http://localhost:8000/api/v1/Create
 Content-Type: application/json
 
 {
-  "parent_Id": "testpost",
-  "user_id": "testetsttesttstst",
-  "post_id": "testpost",
-  "content": "testpost"
+  "ParentId": "99",
+  "UserId": "898",
+  "PostId": "8989",
+  "Content": "testtesttets"
 }
 
 ###

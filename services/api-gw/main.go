@@ -60,7 +60,7 @@ func main() {
 	}
 
 	opts = []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err = createService.RegisterCreatememServiceHandlerFromEndpoint(ctx, mux, "localhost:8081", opts)
+	err = createService.RegisterCreatememServiceHandlerFromEndpoint(ctx, mux, "localhost:8090", opts)
 	if err != nil {
 		panic(err)
 	}
