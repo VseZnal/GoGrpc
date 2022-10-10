@@ -2,9 +2,8 @@ package postgresql
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
-
 	"fmt"
+	_ "github.com/lib/pq"
 )
 
 type Database interface {
@@ -36,7 +35,16 @@ func NewDatabase() (*Databaseconn, error) {
 	return &Databaseconn{conn: db}, err
 }
 
-func (d Databaseconn) Deletedata_db(id string) error {
-	//TODO implement me
-	panic("implement me")
+func (db Databaseconn) Deletedata_db(id string) error {
+	res, err := db.conn.Exec(`DELETE FROM public.mem WHERE slug = $1`, id)
+	if err != nil {
+		panic(err)
+	}
+
+	numDeleted, err := res.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+	print(numDeleted)
+	return nil
 }

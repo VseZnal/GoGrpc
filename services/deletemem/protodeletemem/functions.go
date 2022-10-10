@@ -5,6 +5,7 @@ import (
 	"Grpc/services/deletemem/protodeletemem/proto"
 	pb "Grpc/services/deletemem/protodeletemem/proto"
 	"context"
+	"fmt"
 )
 
 type Server struct {
@@ -21,6 +22,10 @@ func Init() error {
 }
 
 func (s Server) Delete(ctx context.Context, request *protodeletemem.DeleteMemRequest) (*protodeletemem.DeleteMemResponse, error) {
-	//TODO implement me
-	panic("implement me")
+	err := db.Deletedata_db(request.Slug)
+
+	if err != nil {
+		fmt.Printf("enteded delete msg info")
+	}
+	return &protodeletemem.DeleteMemResponse{Status: 1}, nil
 }

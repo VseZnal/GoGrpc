@@ -1,11 +1,11 @@
 ###
 
-GET http://localhost:8000/api/v1/get/3
+GET http://localhost:8000/api/v1/get/2
 Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8000/api/v1/delete/1
+DELETE http://localhost:8000/api/v1/delete/3
 Content-Type: application/json
 
 ###
