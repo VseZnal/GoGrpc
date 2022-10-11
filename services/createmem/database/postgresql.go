@@ -1,15 +1,16 @@
 package postgresql
 
 import (
-	"Grpc/services/createmem/models"
+	protocreatemem "Grpc/services/createmem/protocreatemem/proto"
 	"database/sql"
+	"errors"
 	"fmt"
+	"github.com/jackc/pgconn"
 	_ "github.com/lib/pq"
-	"log"
 )
 
 type Database interface {
-	Postdata_db(m *models.CreateReq) error
+	Postdata_db(m *protocreatemem.Memcreate) error
 }
 
 type Databaseconn struct {
@@ -37,33 +38,41 @@ func NewDatabase() (*Databaseconn, error) {
 	return &Databaseconn{conn: db}, err
 }
 
-func (db *Databaseconn) Postdata_db(m *models.CreateReq) error {
-	/*
-		q := `
+func (db *Databaseconn) Postdata_db(m *protocreatemem.Memcreate) error {
+
+	q := `
 				INSERT INTO public.mem
-				    (parentId,userId,postId,content)
+				    (slug,parentid,userid,postid,content,status)
 				VALUES
-				    ($1, $2, $3, $4)
+				    ($1, $2, $3, $4, $5, $6)
 				RETURNING *;
 				`
 
-		if err := db.conn.QueryRow(q, m.ParentId, m.UserId, m.PostId, m.Content).Scan(&m.ParentId, &m.UserId, &m.PostId, m.Content); err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) {
-				pgErr = err.(*pgconn.PgError)
-				newErr := fmt.Errorf(fmt.Sprintf("SQL Error: %s, Detail: %s, Where: %s, Code: %s, SQLState: %s", pgErr.Message, pgErr.Detail, pgErr.Where, pgErr.Code, pgErr.SQLState()))
-				return newErr
-			}
-			return err
+	if err := db.conn.QueryRow(q, m.Slug, m.ParentId, m.UserId, m.PostId, m.Content, m.Status).Scan(&m.Slug, &m.ParentId, &m.UserId, &m.PostId, &m.Content, &m.Status); err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			pgErr = err.(*pgconn.PgError)
+			newErr := fmt.Errorf(fmt.Sprintf("SQL Error: %s, Detail: %s, Where: %s, Code: %s, SQLState: %s", pgErr.Message, pgErr.Detail, pgErr.Where, pgErr.Code, pgErr.SQLState()))
+			return newErr
 		}
-
-		return nil
-	*/
-	q := "INSERT INTO public.mem (parentId,userId,postId,content) VALUES ('" + m.ParentId + "','" + m.UserId + "','" + m.PostId + "','" + m.Content + "')"
-	row, err := db.conn.Query(q)
-	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	defer row.Close()
-	return err
+
+	return nil
+
+	/*
+		q := "INSERT INTO public.mem (parentId,userId,postId,content) VALUES ('" + m.ParentId + "','" + m.UserId + "','" + m.PostId + "','" + m.Content + "')"
+		row, err := db.conn.Query(q)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer func(row *sql.Rows) {
+			err := row.Close()
+			if err != nil {
+
+			}
+		}(row)
+		return err
+	*/
+
 }

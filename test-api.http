@@ -14,10 +14,10 @@ POST http://localhost:8000/api/v1/Create
 Content-Type: application/json
 
 {
-  "ParentId": "99",
-  "UserId": "898",
-  "PostId": "8989",
-  "Content": "testtesttets"
+  "Content": "nostrud",
+  "ParentId": "cillum mollit sunt",
+  "PostId": "cupidatat",
+  "UserId": "deserunt Excepteur cupidatat"
 }
 
 ###

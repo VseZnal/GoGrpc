@@ -2,7 +2,6 @@ package protocreatemem
 
 import (
 	postgresql "Grpc/services/createmem/database"
-	"Grpc/services/createmem/models"
 	pb "Grpc/services/createmem/protocreatemem/proto"
 	protocreatemem "Grpc/services/createmem/protocreatemem/proto"
 	"context"
@@ -23,23 +22,20 @@ func Init() error {
 }
 
 func (s Server) Create(ctx context.Context, request *protocreatemem.CreateMemRequest) (*protocreatemem.CreateMemResponse, error) {
-	msg := &models.CreateReq{
-		ParentId: request.GetParentId(),
-		UserId:   request.GetUserId(),
-		PostId:   request.GetPostId(),
-		Content:  request.GetContent()}
-
-	err := db.Postdata_db(msg)
-
-	if err != nil {
-		fmt.Printf("enteted get msg info")
-	}
 	out := &protocreatemem.Memcreate{
+		Slug:     "1",
 		ParentId: request.ParentId,
 		UserId:   request.UserId,
 		PostId:   request.PostId,
 		Content:  request.Content,
+		Status:   0,
 	}
 
-	return &protocreatemem.CreateMemResponse{Memcreate: out}, nil
+	err := db.Postdata_db(out)
+
+	if err != nil {
+		fmt.Printf("enteted get msg info")
+	}
+
+	return &protocreatemem.CreateMemResponse{Memcreate: out}, err
 }
