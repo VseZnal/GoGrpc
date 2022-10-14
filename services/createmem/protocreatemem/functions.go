@@ -23,7 +23,7 @@ func Init() error {
 
 func (s Server) Create(ctx context.Context, request *protocreatemem.CreateMemRequest) (*protocreatemem.CreateMemResponse, error) {
 	out := &protocreatemem.Memcreate{
-		Slug:     "1",
+		Slug:     "77",
 		ParentId: request.ParentId,
 		UserId:   request.UserId,
 		PostId:   request.PostId,
